@@ -11,13 +11,13 @@ export const registerValidator = [
     body("email").isEmail().withMessage("No es un email válido"),
     body("email").custom(emailExists),
     body("username").custom(usernameExists),
-    body("password").isStrongPassword({
+    /*body("password").isStrongPassword({
         minLength: 8,
         minLowercase:1,
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1
-    }),
+    }),*/
     validarCampos,
     deleteFileOnError,
     handleErrors

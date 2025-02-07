@@ -56,3 +56,69 @@ export const saveAppointment = async (req, res) => {
     }); 
   }
 };
+
+
+export const listarCitas = async (req, res) =>{
+  try{
+    const {uid} = req.params;
+    const { limite = 3, desde = 0 } = req.params;
+    const query = { user: uid };
+    const [total, appointments] = await Promise.all([
+      Appointment.countDocuments(query),
+      Appointment.find(query)
+      .skip(Number(desde))
+      .limit(Number(limite))
+  ])
+  return res.status(200).json({
+    success: true,
+    total,
+    appointments
+})
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      message: "Error al listar las l¿citas del usuario",
+      error: err.messagge
+    })
+  }
+}
+
+export const cancelarCita = async (req, res) =>{
+  try{
+    const {pid} = req.params;
+
+    const appointment = await Appointment.findByIdAndUpdate(pid, {status: "CANCELLED"}, {new: true})
+    return res.status(200).json({
+      success: true,
+      message: "Cita cancelada",
+      appointment
+    })
+  }catch(err){
+    return res.status(500).json({
+      success: false,
+      message: "Error al cancelar la cita",
+      error:err.message
+    })
+  }
+}
+
+export const actualizarCita = async (req, res) => {
+  try {
+      const { pid } = req.params;
+      const  data  = req.body;
+
+      const appointment = await Appointment.findByIdAndUpdate(pid, data, { new: true });
+
+      res.status(200).json({
+          success: true,
+          msg: 'Cita Actualizada',
+          appointment,
+      });
+  } catch (err) {
+      res.status(500).json({
+          success: false,
+          msg: 'Error al actualizar la cita',
+          error: err.message
+      });
+  }
+}
