@@ -20,7 +20,6 @@ export const validarCambiosCita = [
     body("date").notEmpty().withMessage("La fecha es requerida"),
     body("pet").notEmpty().withMessage("La mascota es requerida"),
     body("pet").isMongoId().withMessage("No es un ID válido de MongoDB"),
-    body("status").notEmpty().withMessage("El status es requerido"),
     validarCampos,
     handleErrors
 ];
